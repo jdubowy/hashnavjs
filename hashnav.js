@@ -56,8 +56,10 @@ function HashNav(container_id, options) {
         routes.push(r);
     }
 
+    var leading_hash_matcher = /^#/;
+
     this.go = function() {
-        var page = window.location.hash.replace(/^#/, '');
+        var page = window.location.hash.replace(leading_hash_matcher, '');
 
         for (var i = 0; i < routes.length; i++) {
             var m = page.match(routes[i].matcher);
