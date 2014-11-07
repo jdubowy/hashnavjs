@@ -125,12 +125,11 @@ function HashNav(container_id, options) {
         } else {
             var temp_container_id = container_id + '___rlj32489fd'; // TODO: use guid to ensure uniqueness
             $('#' + container_id).after('<div id="' + temp_container_id + '"><div>');
+            $('#' + temp_container_id).html(content);
 
             $('#' + container_id).one('webkitTransitionEnd', function(e) {
-                //$(e.target).remove();
                 $('#' + container_id).remove();
                 $('#' + temp_container_id).attr('id', container_id);
-                $('#' + container_id).html(content);
             });
 
             // Force reflow. More information here:
@@ -138,7 +137,6 @@ function HashNav(container_id, options) {
             $('#' + container_id).offsetWidth;
 
             // Position the new page and the current page at the ending position of their animation with a transition class indicating the duration of the animation
-            $('#' + temp_container_id).attr('class', 'page transition center');
             $('#' + container_id).attr('class', 'page transition ' + (from === 'left' ? 'right' : 'left'));
         }
     }
