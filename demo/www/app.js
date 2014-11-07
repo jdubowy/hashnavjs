@@ -17,12 +17,12 @@
     hashnav.add_route("/baz/?", {top_level_tab_index: 2}, function(a){
         return '<div style="background-color: orange;">Baz</div>';
     });
-    hashnav.add_route("/foo/([^/]+)/?", function(a){
-        return '<div style="background-color: yellow;">Foo ' + a + '</div>' +
+    hashnav.add_route("/foo/:first_name/?", function(first_name){
+        return '<div style="background-color: yellow;">Foo ' + first_name + '</div>' +
             '<p><a href="#/foo/Bob/Jones/">Bob Jones</a></p>';
     });
-    hashnav.add_route("/foo/([^/]+)/([^/]+)/?", function(a, b){
-        return '<div style="background-color: purple;">Foo ' + a + ' ' + b +'</div>';
+    hashnav.add_route("/foo/:first_name/:last_name/?", function(first_name, last_name){
+        return '<div style="background-color: purple;">Foo ' + first_name + ' ' + last_name +'</div>';
     });
     hashnav.go();
 }());

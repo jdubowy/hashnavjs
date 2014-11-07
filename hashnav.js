@@ -27,6 +27,8 @@ function HashNav(container_id, options) {
     var history = [];
     var routes = [];
 
+    var path_param_matcher = /:[^/]+/g;
+
     /*  add_route: associates routes matching a pattern with a content generator.
         @todo: switch 'generator' and 'options' args and support missing options
 
@@ -45,6 +47,8 @@ function HashNav(container_id, options) {
         }
 
         //pattern = pattern.replace(/\/*$/, ''); /* so that we match with or with trailing slash */
+
+        pattern = pattern.replace(path_param_matcher, '([^/]+)');
 
         var r = {
             matcher: RegExp("^" + pattern + "$"),
