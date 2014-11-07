@@ -46,12 +46,11 @@ function HashNav(container_id, options) {
 
         //pattern = pattern.replace(/\/*$/, ''); /* so that we match with or with trailing slash */
 
-        "foo/sdf/343/df".match(RegExp("^" + "foo/(.*)/(.*)/" + "$"))
         var r = {
             matcher: RegExp("^" + pattern + "$"),
             generator: generator
         };
-        if (route_options.top_level_tab_index) {
+        if (typeof route_options.top_level_tab_index != 'undefined') {
             r.top_level_tab_index = route_options.top_level_tab_index;
         }
         routes.push(r);
@@ -94,8 +93,9 @@ function HashNav(container_id, options) {
             history.pop();
             slideFrom(content, 'left');
         } else if (typeof route.top_level_tab_index != 'undefined') {
-            /* It's one of the top level pages; clear history and transition according
-               to previously visited top-level page and use options */
+            /* It's one of the top level pages; clear history and add current
+               page to it, and then transition according to previously visited
+               top-level page and use options */
             var t_idx = history[0].r.top_level_tab_index;
             if (typeof t_idx === 'undefined' || t_idx === route.top_level_tab_index ||
                     options.always_transition_top_level_pages_from_center) {
@@ -104,7 +104,7 @@ function HashNav(container_id, options) {
                 var direction = (route.top_level_tab_index < t_idx) ? ('left') : ('right');
                 slideFrom(content, direction)
             }
-            history = [];
+            history = [{p: page, r: route}];
         } else {
             /* New page to push on history stack */
             history.push({p: page, r: route});
@@ -124,6 +124,7 @@ function HashNav(container_id, options) {
                 //$(e.target).remove();
                 $('#' + container_id).remove();
                 $('#' + temp_container_id).attr('id', container_id);
+                $('#' + container_id).html(content);
             });
 
             // Force reflow. More information here:
