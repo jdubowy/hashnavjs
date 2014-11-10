@@ -7,8 +7,13 @@
             '<p><a href="#/baz">baz</a></p>' +
             '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<p>';
     })
-    hashnav.add_route("/foo/?", {top_level_tab_index: 0}, function(a){
-        return '<div style="background-color: red;">Foo</div>' +
+    hashnav.add_route("/foo/?", {
+        top_level_tab_index: 0,
+        after_render: function() {
+            setTimeout("$('#foo-div').css('background-color', 'green')", 500);
+        }
+    }, function(a){
+        return '<div id="foo-div" style="background-color: red;">Foo</div>' +
             '<p><a href="#/foo/Bob/">Bob</a></p>' +
             '<p><a href="#/foo/Bob/Jones/">Bob Jones</a></p>';
     });
