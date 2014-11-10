@@ -73,7 +73,7 @@ function HashNav(container_id, options) {
             if (m){
                 var args = m.slice(1,m.length);
                 var content = routes[i].generator.apply(null, args);
-                slide(page, content, routes[i]);
+                navigate(page, content, routes[i]);
                 return;
             }
         }
@@ -81,28 +81,25 @@ function HashNav(container_id, options) {
         // TOOD: support options.four_oh_four
     }
 
-    var slide = function(page, content, route) {
-
-        // TODO: refactor to get top-level tab index from route, not from top_level_pages
-        // TODO: other refactoring to get this working
-
-
+    var navigate = function(page, content, route) {
+        // TODO: restructure code to move history modification, calls
+        // to slide, and calling after_render callback in separate function
         var l = history.length;
 
         if (l === 0) {  /* No history */
             history.push({p: page, r: route});
-            slideFrom(content);
+            slide(content);
             if (route.after_render) {route.after_render();}
         } else if (history[l-1].p === page) {  /* Same page */
             if (options.allow_reloads || route.allow_reloads) {
                 /* Don't push to history, but reload content */
-                slideFrom(content);
+                slide(content);
                 if (route.after_render) {route.after_render();}
             } /* else, just ignore */
         } else if (l > 1 && page === history[l-2].p) { /* Previous page */
             /* Slide from the left and pop current page from history */
             history.pop();
-            slideFrom(content, 'left');
+            slide(content, 'left');
             if (route.after_render) {route.after_render();}
         } else if (typeof route.top_level_tab_index != 'undefined') {
             /* It's one of the top level pages; clear history and add current
@@ -111,23 +108,23 @@ function HashNav(container_id, options) {
             var t_idx = history[0].r.top_level_tab_index;
             if (typeof t_idx === 'undefined' || t_idx === route.top_level_tab_index ||
                     options.always_transition_top_level_pages_from_center) {
-                slideFrom(content)
+                slide(content);
                 if (route.after_render) {route.after_render();}
             } else {
                 var direction = (route.top_level_tab_index < t_idx) ? ('left') : ('right');
-                slideFrom(content, direction)
+                slide(content, direction);
                 if (route.after_render) {route.after_render();}
             }
             history = [{p: page, r: route}];
         } else {
             /* New page to push on history stack */
             history.push({p: page, r: route});
-            slideFrom(content, 'right');
+            slide(content, 'right');
             if (route.after_render) {route.after_render();}
         }
     }
 
-    var slideFrom = function(content, from) {
+    var slide = function(content, from) {
         if (!from) {
             $('#' + container_id).html(content);
             $('#' + container_id).attr('class', 'page center');// TODO: slide up or down
