@@ -1,5 +1,12 @@
 (function () {
-    var hashnav = new HashNav('current-page');
+    var hashnav = new HashNav('current-page', {
+        after_render: function() {
+            $('.back-link').click(function(event){
+                event.preventDefault();
+                hashnav.back();
+            });
+        }
+    });
     hashnav.add_route("/?", function(a){
         return '<div>Hello</div>' +
             '<p><a href="#/foo/">foo</a></p>' +
@@ -45,6 +52,12 @@
             'in augue dolorum aliquando, ei sit meis iusto, ex purto malis tacimates vix. ' +
             'Unum dictas molestie pro id, est omittantur mediocritatem in, mel ne nobis ' +
             'possim indoctum.<p>';
+    });
+    hashnav.add_route("/blank/?", {top_level_tab_index: 3}, function(a){
+        return '';
+    });
+    hashnav.add_route("/blank2/?", function(a){
+        return '';
     });
     hashnav.add_route("/foo/:first_name/?", {
         after_render: function() {

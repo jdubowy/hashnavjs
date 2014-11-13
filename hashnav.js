@@ -19,6 +19,8 @@
         of possibly chnging data from server
      - always_transition_top_level_pages_from_center -- Don't use left/right
         transition effect when going from one top level tab
+     - after_render -- callback to be executed after rendering any route
+        (called before any route-specific after-render callback)
 */
 
 function HashNav(container_id, options) {
@@ -37,6 +39,8 @@ function HashNav(container_id, options) {
             specific to this route.
          - top_level_tab_index -- use for animating left/right transition between
             top level tabs
+         - after_render -- callback to be executed after rendering this route
+            (called after any global after-render callback)
     */
     this.add_route = function(pattern, route_options, generator) {
         if (typeof route_options == 'function') {
@@ -95,6 +99,15 @@ function HashNav(container_id, options) {
         // TODO: is this appropriate behavior?
     }
 
+    var call_after_render = function(route) {
+        if (options.after_render) {
+            options.after_render();
+        }
+        if (route.after_render) {
+            route.after_render();
+        }
+    }
+
     var navigate = function(page, content, route) {
         // TODO: restructure code to move history modification, calls
         // to slide, and calling after_render callback in separate function
@@ -103,18 +116,18 @@ function HashNav(container_id, options) {
         if (l === 0) {  /* No history */
             history.push({p: page, r: route});
             slide(content);
-            if (route.after_render) {route.after_render();}
+            call_after_render(route);
         } else if (history[l-1].p === page) {  /* Same page */
             if (options.allow_reloads || route.allow_reloads) {
                 /* Don't push to history, but reload content */
                 slide(content);
-                if (route.after_render) {route.after_render();}
+                call_after_render(route);
             } /* else, just ignore */
         } else if (l > 1 && page === history[l-2].p) { /* Previous page */
             /* Slide from the left and pop current page from history */
             history.pop();
             slide(content, 'left');
-            if (route.after_render) {route.after_render();}
+            call_after_render(route);
         } else if (typeof route.top_level_tab_index != 'undefined') {
             /* It's one of the top level pages; clear history and add current
                page to it, and then transition according to previously visited
@@ -123,18 +136,18 @@ function HashNav(container_id, options) {
             if (typeof t_idx === 'undefined' || t_idx === route.top_level_tab_index ||
                     options.always_transition_top_level_pages_from_center) {
                 slide(content);
-                if (route.after_render) {route.after_render();}
+                call_after_render(route);
             } else {
                 var direction = (route.top_level_tab_index < t_idx) ? ('left') : ('right');
                 slide(content, direction);
-                if (route.after_render) {route.after_render();}
+                call_after_render(route);
             }
             history = [{p: page, r: route}];
         } else {
             /* New page to push on history stack */
             history.push({p: page, r: route});
             slide(content, 'right');
-            if (route.after_render) {route.after_render();}
+            call_after_render(route);
         }
     }
 
