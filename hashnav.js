@@ -143,9 +143,6 @@ function HashNav(container_id, options) {
         $('#' + container_id).after('<div id="' + temp_container_id +
             '" class="' + $('#' + container_id).attr('class') + '"><div>');
         $('#' + temp_container_id).html(content);
-        if (options.container_classes) {
-            $('#' + temp_container_id).addClass(options.container_classes);
-        }
 
         $('#' + container_id).one('webkitTransitionEnd', function(e) {
             $('#' + container_id).remove();
