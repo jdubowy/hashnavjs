@@ -164,6 +164,7 @@ function HashNav(container_id, options) {
             cls = 'hashnav-left';
         }
         cls += ' hashnav-page hashnav-transition';
+        cls += ' ' + $('#' + container_id).attr('class');
         $('#' + container_id).attr('class', cls);
     }
 
