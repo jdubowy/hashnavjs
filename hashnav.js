@@ -153,49 +153,73 @@ function HashNav(container_id, options) {
 
     var first_page = true;
 
-    var add_new_content = function(content) {
-        if (first_page) {
-            $('#' + container_id).html(content);
-        } else {
-            var temp_container_id = container_id + '___rlj32489fd'; // TODO: use guid to ensure uniqueness
-            $('#' + container_id).after('<div id="' + temp_container_id +
-                '" class="' + $('#' + container_id).attr('class') + '"><div>');
-            $('#' + temp_container_id).html(content);
-
-            $('#' + container_id).one('webkitTransitionEnd', function(e) {
-                $('#' + container_id).remove();
-                $('#' + temp_container_id).attr('id', container_id);
-            });
-        }
-    }
-
-    var apply_transition_class = function(from) {
-        if (first_page) {
-            return;
-        }
-
-        // Position the new page and the current page at the ending position of
-        // their animation with a transition class indicating the duration of the animation
-        var cls = "hashnav-up";
-        if (from === 'left') {
-            cls = 'hashnav-right';
-        } else if (from === 'right') {
-            cls = 'hashnav-left';
-        }
-        cls += ' hashnav-page hashnav-transition';
-        cls += ' ' + $('#' + container_id).attr('class');
-        $('#' + container_id).attr('class', cls);
-    }
-
     var slide = function(content, from) {
-        add_new_content(content);
+        if (first_page) {
+            /* Insert content with no transition effect */
+            $('#' + container_id).html(content);
+            first_page = false;
+        } else {
+            var old_container = $('#' + container_id);
+            old_container.attr('id', container_id + '___rlj32489fd'); // TODO: use guid to ensure uniqueness
+
+            add_new_content(content, from, old_container);
+
+            transition(from, old_container, $('#' + container_id));
+        }
 
         // Force reflow. More information here:
         // http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
         $('#' + container_id).offsetWidth;
-        apply_transition_class(from);
+    }
 
-        first_page = false;
+    var add_new_content = function(content, from, old_container) {
+        var cls = "hashnav-page";
+
+        /* add class to position left of, right of, or below viewable region */
+        if (from === 'left') {
+            cls += ' hashnav-left';
+        } else if (from === 'right') {
+            cls += ' hashnav-right';
+        } else {
+            cls += ' hashnav-below';
+        }
+
+        /* add container's original classes */
+        cls += ' ' + old_container.attr('class');
+
+        old_container.after('<div id="' + container_id + '" class="' + cls + '">' + content + '<div>');
+    }
+
+    var transition = function(from, old_container, new_container) {
+        var container_class = old_container.attr('class');
+
+        old_container.one('webkitTransitionEnd', function(e) {
+            $('#' + old_container.attr('id')).remove();
+            new_container.attr('class', container_class);
+        });
+        // new_container.one('webkitTransitionEnd', function(e) {
+        //     new_container.attr('class', container_class)
+        // })
+
+        old_container.attr('class', [container_class, old_container_class(from)].join(' '));
+        new_container.attr('class', [container_class, new_container_class()].join(' '));
+    }
+
+    var old_container_class = function(from) {
+        var cls = 'hashnav-page hashnav-transition';
+        if (from === 'left') {
+            cls += ' hashnav-right';
+        } else if (from === 'right') {
+            cls += ' hashnav-left';
+        } else {
+            cls += ' hashnav-above';
+        }
+
+        return cls;
+    }
+
+    var new_container_class = function() {
+        return 'hashnav-page hashnav-transition hashnav-center';
     }
 
     $(window).on('hashchange', this.go);
