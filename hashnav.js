@@ -31,6 +31,9 @@ function HashNav(container_id, options) {
 
     var path_param_matcher = /:[^/]+/g;
 
+
+    /** Public Interface **/
+
     /*  add_route: associates routes matching a pattern with a content generator.
         @todo: switch 'generator' and 'options' args and support missing options
 
@@ -69,6 +72,8 @@ function HashNav(container_id, options) {
 
     var leading_hash_matcher = /^#/;
 
+    /*  go: navigate to the current page
+    */
     this.go = function() {
         var page = window.location.hash.replace(leading_hash_matcher, '');
 
@@ -85,6 +90,8 @@ function HashNav(container_id, options) {
         // TOOD: support options.four_oh_four
     }
 
+    /*  back: navigate to the previously visited page
+    */
     this.back = function() {
         var l = history.length;
 
@@ -107,6 +114,9 @@ function HashNav(container_id, options) {
             route.after_render();
         }
     }
+
+
+    /** Private Methods **/
 
     var navigate = function(page, content, route) {
         // TODO: restructure code to move history modification, calls
