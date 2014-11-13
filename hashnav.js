@@ -19,8 +19,6 @@
         of possibly chnging data from server
      - always_transition_top_level_pages_from_center -- Don't use left/right
         transition effect when going from one top level tab
-     - container_classes -- comma separate string of one or more classes
-        to add to container upon each navigation
 */
 
 function HashNav(container_id, options) {
@@ -39,8 +37,6 @@ function HashNav(container_id, options) {
             specific to this route.
          - top_level_tab_index -- use for animating left/right transition between
             top level tabs
-
-        @todo: support route-specific container_classes as well (?)
     */
     this.add_route = function(pattern, route_options, generator) {
         if (typeof route_options == 'function') {
@@ -143,15 +139,15 @@ function HashNav(container_id, options) {
     }
 
     var slide = function(content, from) {
+        // TODO: remove if (!from) {...} block and refactor else block to handle this case
+        // (add 'hashnav-center' class isntead of 'hashnav-right' or 'hashnav-left', and update
+        // css to slide up or down)
         if (!from) {
             $('#' + container_id).html(content);
-            $('#' + container_id).attr('class', 'hashnav-page hashnav-center');// TODO: slide up or down
-            if (options.container_classes) {
-                $('#' + container_id).addClass(options.container_classes);
-            }
         } else {
             var temp_container_id = container_id + '___rlj32489fd'; // TODO: use guid to ensure uniqueness
-            $('#' + container_id).after('<div id="' + temp_container_id + '"><div>');
+            $('#' + container_id).after('<div id="' + temp_container_id +
+                '" class="' + $('#' + container_id).attr('class') + '"><div>');
             $('#' + temp_container_id).html(content);
             if (options.container_classes) {
                 $('#' + temp_container_id).addClass(options.container_classes);
