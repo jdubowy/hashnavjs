@@ -139,32 +139,32 @@ function HashNav(container_id, options) {
     }
 
     var slide = function(content, from) {
-        // TODO: remove if (!from) {...} block and refactor else block to handle this case
-        // (add 'hashnav-center' class isntead of 'hashnav-right' or 'hashnav-left', and update
-        // css to slide up or down)
-        if (!from) {
-            $('#' + container_id).html(content);
-        } else {
-            var temp_container_id = container_id + '___rlj32489fd'; // TODO: use guid to ensure uniqueness
-            $('#' + container_id).after('<div id="' + temp_container_id +
-                '" class="' + $('#' + container_id).attr('class') + '"><div>');
-            $('#' + temp_container_id).html(content);
-            if (options.container_classes) {
-                $('#' + temp_container_id).addClass(options.container_classes);
-            }
-
-            $('#' + container_id).one('webkitTransitionEnd', function(e) {
-                $('#' + container_id).remove();
-                $('#' + temp_container_id).attr('id', container_id);
-            });
-
-            // Force reflow. More information here:
-            // http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
-            $('#' + container_id).offsetWidth;
-
-            // Position the new page and the current page at the ending position of their animation with a transition class indicating the duration of the animation
-            $('#' + container_id).attr('class', 'hashnav-page hashnav-transition ' + (from === 'left' ? 'hashnav-right' : 'hashnav-left'));
+        var temp_container_id = container_id + '___rlj32489fd'; // TODO: use guid to ensure uniqueness
+        $('#' + container_id).after('<div id="' + temp_container_id +
+            '" class="' + $('#' + container_id).attr('class') + '"><div>');
+        $('#' + temp_container_id).html(content);
+        if (options.container_classes) {
+            $('#' + temp_container_id).addClass(options.container_classes);
         }
+
+        $('#' + container_id).one('webkitTransitionEnd', function(e) {
+            $('#' + container_id).remove();
+            $('#' + temp_container_id).attr('id', container_id);
+        });
+
+        // Force reflow. More information here:
+        // http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
+        $('#' + container_id).offsetWidth;
+
+        // Position the new page and the current page at the ending position of their animation with a transition class indicating the duration of the animation
+        var cls = "hashnav-up";
+        if (from === 'left') {
+            cls = 'hashnav-right';
+        } else if (from === 'right') {
+            cls = 'hashnav-left';
+        }
+        cls += ' hashnav-page hashnav-transition';
+        $('#' + container_id).attr('class', cls);
     }
 
     $(window).on('hashchange', this.go);
