@@ -19,6 +19,8 @@
         of possibly chnging data from server
      - always_transition_top_level_pages_from_center -- Don't use left/right
         transition effect when going from one top level tab
+     - container_classes -- comma separate string of one or more classes
+        to add to container upon each navigation
 */
 
 function HashNav(container_id, options) {
@@ -37,6 +39,8 @@ function HashNav(container_id, options) {
             specific to this route.
          - top_level_tab_index -- use for animating left/right transition between
             top level tabs
+
+        @todo: support route-specific container_classes as well (?)
     */
     this.add_route = function(pattern, route_options, generator) {
         if (typeof route_options == 'function') {
@@ -142,10 +146,16 @@ function HashNav(container_id, options) {
         if (!from) {
             $('#' + container_id).html(content);
             $('#' + container_id).attr('class', 'page center');// TODO: slide up or down
+            if (options.container_classes) {
+                $('#' + container_id).addClass(options.container_classes);
+            }
         } else {
             var temp_container_id = container_id + '___rlj32489fd'; // TODO: use guid to ensure uniqueness
             $('#' + container_id).after('<div id="' + temp_container_id + '"><div>');
             $('#' + temp_container_id).html(content);
+            if (options.container_classes) {
+                $('#' + temp_container_id).addClass(options.container_classes);
+            }
 
             $('#' + container_id).one('webkitTransitionEnd', function(e) {
                 $('#' + container_id).remove();

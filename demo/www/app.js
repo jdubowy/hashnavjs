@@ -1,5 +1,5 @@
 (function () {
-    var hashnav = new HashNav('current-page');
+    var hashnav = new HashNav('current-page', {container_classes: 'current-page'});
     hashnav.add_route("/?", function(a){
         return '<div>Hello</div>' +
             '<p><a href="#/foo/">foo</a></p>' +
