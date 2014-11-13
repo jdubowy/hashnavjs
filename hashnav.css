@@ -5,7 +5,7 @@
     overflow: hidden;
 }
 
-.page {
+.hashnav-page {
     position: absolute;
     top: 0;
     left: 0;
@@ -16,22 +16,22 @@
     text-align: left;
 }
 
-.page.left {
+.hashnav-page.hashnav-left {
     -webkit-transform: translate3d(-100%, 0, 0);
     transform: translate3d(-100%, 0, 0);
 }
 
-.page.center {
+.hashnav-page.hashnav-center {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }
 
-.page.right {
+.hashnav-page.hashnav-right {
     -webkit-transform: translate3d(100%, 0, 0);
     transform: translate3d(100%, 0, 0);
 }
 
-.page.transition {
+.hashnav-page.hashnav-transition {
     -webkit-transition-duration: .25s;
     transition-duration: .25s;
 }

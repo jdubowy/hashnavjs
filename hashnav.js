@@ -145,7 +145,7 @@ function HashNav(container_id, options) {
     var slide = function(content, from) {
         if (!from) {
             $('#' + container_id).html(content);
-            $('#' + container_id).attr('class', 'page center');// TODO: slide up or down
+            $('#' + container_id).attr('class', 'hashnav-page hashnav-center');// TODO: slide up or down
             if (options.container_classes) {
                 $('#' + container_id).addClass(options.container_classes);
             }
@@ -167,7 +167,7 @@ function HashNav(container_id, options) {
             $('#' + container_id).offsetWidth;
 
             // Position the new page and the current page at the ending position of their animation with a transition class indicating the duration of the animation
-            $('#' + container_id).attr('class', 'page transition ' + (from === 'left' ? 'right' : 'left'));
+            $('#' + container_id).attr('class', 'hashnav-page hashnav-transition ' + (from === 'left' ? 'hashnav-right' : 'hashnav-left'));
         }
     }
 
