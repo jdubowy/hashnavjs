@@ -138,22 +138,31 @@ function HashNav(container_id, options) {
         }
     }
 
-    var slide = function(content, from) {
-        var temp_container_id = container_id + '___rlj32489fd'; // TODO: use guid to ensure uniqueness
-        $('#' + container_id).after('<div id="' + temp_container_id +
-            '" class="' + $('#' + container_id).attr('class') + '"><div>');
-        $('#' + temp_container_id).html(content);
+    var first_page = true;
 
-        $('#' + container_id).one('webkitTransitionEnd', function(e) {
-            $('#' + container_id).remove();
-            $('#' + temp_container_id).attr('id', container_id);
-        });
+    var add_new_content = function(content) {
+        if (first_page) {
+            $('#' + container_id).html(content);
+        } else {
+            var temp_container_id = container_id + '___rlj32489fd'; // TODO: use guid to ensure uniqueness
+            $('#' + container_id).after('<div id="' + temp_container_id +
+                '" class="' + $('#' + container_id).attr('class') + '"><div>');
+            $('#' + temp_container_id).html(content);
 
-        // Force reflow. More information here:
-        // http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
-        $('#' + container_id).offsetWidth;
+            $('#' + container_id).one('webkitTransitionEnd', function(e) {
+                $('#' + container_id).remove();
+                $('#' + temp_container_id).attr('id', container_id);
+            });
+        }
+    }
 
-        // Position the new page and the current page at the ending position of their animation with a transition class indicating the duration of the animation
+    var apply_transition_class = function(from) {
+        if (first_page) {
+            return;
+        }
+
+        // Position the new page and the current page at the ending position of
+        // their animation with a transition class indicating the duration of the animation
         var cls = "hashnav-up";
         if (from === 'left') {
             cls = 'hashnav-right';
@@ -163,6 +172,17 @@ function HashNav(container_id, options) {
         cls += ' hashnav-page hashnav-transition';
         cls += ' ' + $('#' + container_id).attr('class');
         $('#' + container_id).attr('class', cls);
+    }
+
+    var slide = function(content, from) {
+        add_new_content(content);
+
+        // Force reflow. More information here:
+        // http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
+        $('#' + container_id).offsetWidth;
+        apply_transition_class(from);
+
+        first_page = false;
     }
 
     $(window).on('hashchange', this.go);
