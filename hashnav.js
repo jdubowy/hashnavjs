@@ -126,18 +126,18 @@ function HashNav(container_id, options) {
         if (l === 0) {  /* No history */
             history.push({p: page, r: route});
             slide(content);
-            call_after_render(route);
         } else if (history[l-1].p === page) {  /* Same page */
             if (options.allow_reloads || route.allow_reloads) {
                 /* Don't push to history, but reload content */
                 slide(content);
-                call_after_render(route);
-            } /* else, just ignore */
+            } else {
+                // trying visit same page, but we're ignoring reloads
+                return;
+            }
         } else if (l > 1 && page === history[l-2].p) { /* Previous page */
             /* Slide from the left and pop current page from history */
             history.pop();
             slide(content, 'left');
-            call_after_render(route);
         } else if (typeof route.top_level_tab_index != 'undefined') {
             /* It's one of the top level pages; clear history and add current
                page to it, and then transition according to previously visited
@@ -146,19 +146,18 @@ function HashNav(container_id, options) {
             if (typeof t_idx === 'undefined' || t_idx === route.top_level_tab_index ||
                     options.always_transition_top_level_pages_from_center) {
                 slide(content);
-                call_after_render(route);
             } else {
                 var direction = (route.top_level_tab_index < t_idx) ? ('left') : ('right');
                 slide(content, direction);
-                call_after_render(route);
             }
             history = [{p: page, r: route}];
         } else {
             /* New page to push on history stack */
             history.push({p: page, r: route});
             slide(content, 'right');
-            call_after_render(route);
         }
+
+        call_after_render(route);
     }
 
     var first_page = true;
