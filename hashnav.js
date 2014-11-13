@@ -81,6 +81,20 @@ function HashNav(container_id, options) {
         // TOOD: support options.four_oh_four
     }
 
+    this.back = function() {
+        var l = history.length;
+
+        if (l > 1) {
+            /* pop current page */
+            //history.pop()
+            /* go previous page */
+            //navigate(history[l-2].p, history[l-2].c, history[l-2].r);
+            window.location.hash = history[l-2].p;
+        }
+        // else, silently do nothing
+        // TODO: is this appropriate behavior?
+    }
+
     var navigate = function(page, content, route) {
         // TODO: restructure code to move history modification, calls
         // to slide, and calling after_render callback in separate function

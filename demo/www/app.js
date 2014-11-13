@@ -46,7 +46,13 @@
             'Unum dictas molestie pro id, est omittantur mediocritatem in, mel ne nobis ' +
             'possim indoctum.<p>';
     });
-    hashnav.add_route("/foo/:first_name/?", function(first_name){
+    hashnav.add_route("/foo/:first_name/?", {
+        after_render: function() {
+            $('.back-button').click(function(){
+                hashnav.back();
+            });
+        }
+    }, function(first_name){
         return '<div style="background-color: yellow;">Foo ' + first_name + '</div>' +
             '<p><a href="#/foo/Bob/Jones/">Bob Jones</a></p>' +
             '<p>Cum ea minim altera commodo, qui vide moderatius an. Nec eu reque ' +
@@ -56,9 +62,16 @@
             'An has simul oportere repudiandae. Ea debet scripta vis, eum cu eirmod ' +
             'dolorum sensibus. Sint contentiones cum ea, ut mea odio menandri volutpat. ' +
             'Vim reque audire temporibus eu, ne prima accumsan qui. Id mea elitr civibus. ' +
-            'Ex oratio disputationi eum.<p>';
+            'Ex oratio disputationi eum.<p>' +
+            '<button class="back-button">back</button>';
     });
-    hashnav.add_route("/foo/:first_name/:last_name/?", function(first_name, last_name){
+    hashnav.add_route("/foo/:first_name/:last_name/?", {
+        after_render: function() {
+            $('.back-button').click(function(){
+                hashnav.back();
+            });
+        }
+    }, function(first_name, last_name){
         return '<div style="background-color: purple;">Foo ' + first_name + ' ' + last_name +'</div>' +
             '<p>Cu vis inani blandit, enim honestatis instructior has ex. Porro numquam' +
             ' ius ut, zril nonumy nominavi ex mei. Ea his accusam scriptorem, ne primis' +
@@ -66,7 +79,8 @@
             'pro, aperiri consequat ad eam. Ei mel propriae volutpat scribentur, eu qui ' +
             'movet primis. An doming putent nostrud vis. Quas assum tibique qui in. Ex ' +
             'est vide comprehensam necessitatibus, sit tota oportere no. Cu duo mundi ' +
-            'mollis eleifend.<p>';
+            'mollis eleifend.<p>' +
+            '<button class="back-button">back</button>';
     });
     hashnav.go();
 }());
