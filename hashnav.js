@@ -219,7 +219,7 @@ function HashNav(container_id, options) {
         setTimeout(function(){
             old_container.remove();
             new_container.attr('class', container_class);
-        }, 1250);
+        }, 250);
     }
 
     var old_container_class = function(from) {

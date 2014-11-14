@@ -29,6 +29,6 @@
 }
 
 .hashnav-page.hashnav-transition {
-    -webkit-transition-duration: 1.25s;
-    transition-duration: 1.25s;
+    -webkit-transition-duration: .25s;
+    transition-duration: .25s;
 }
