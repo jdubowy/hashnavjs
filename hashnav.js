@@ -180,7 +180,9 @@ function HashNav(container_id, options) {
             // old_container.offsetWidth;
             // new_container.offsetWidth;
 
-            transition(from, old_container, new_container);
+            setTimeout(function(){
+                transition(from, old_container, new_container);
+            }, 100);
         }
 
     }
