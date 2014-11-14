@@ -31,6 +31,7 @@ function HashNav(container_id, options) {
 
     var path_param_matcher = /:[^/]+/g;
 
+    var container_class = $('#' + container_id).attr('class');
 
     /** Public Interface **/
 
@@ -207,7 +208,6 @@ function HashNav(container_id, options) {
     }
 
     var transition = function(from, old_container, new_container) {
-        var container_class = old_container.attr('class');
         /* Note: this uses setTimeout rather than
              old_container.one('webkitTransitionEnd', function(e) {...}
            because hitting links in quick succession, before the previous
