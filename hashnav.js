@@ -180,6 +180,9 @@ function HashNav(container_id, options) {
             // old_container.offsetWidth;
             // new_container.offsetWidth;
 
+            /* HACK: for some reason, without the timeout, the old page slides
+               off but the new page shows up immediately (i.e. effectively zero
+               transition duration) */
             setTimeout(function(){
                 transition(from, old_container, new_container);
             }, 100);
