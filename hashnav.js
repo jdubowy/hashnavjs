@@ -172,13 +172,16 @@ function HashNav(container_id, options) {
             old_container.attr('id', container_id + '___rlj32489fd'); // TODO: use guid to ensure uniqueness
 
             add_new_content(content, from, old_container);
+            var new_container = $('#' + container_id);
 
-            transition(from, old_container, $('#' + container_id));
+            // Force reflow. More information here:
+            // http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
+            old_container.offsetWidth;
+            new_container.offsetWidth;
+
+            transition(from, old_container, new_container);
         }
 
-        // Force reflow. More information here:
-        // http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
-        $('#' + container_id).offsetWidth;
     }
 
     var add_new_content = function(content, from, old_container) {
