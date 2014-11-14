@@ -177,8 +177,8 @@ function HashNav(container_id, options) {
 
             // Force reflow. More information here:
             // http://www.phpied.com/rendering-repaint-reflowrelayout-restyle/
-            old_container.offsetWidth;
-            new_container.offsetWidth;
+            // old_container.offsetWidth;
+            // new_container.offsetWidth;
 
             transition(from, old_container, new_container);
         }
