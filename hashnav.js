@@ -169,7 +169,7 @@ function HashNav(container_id, options) {
             first_page = false;
         } else {
             var old_container = $('#' + container_id);
-            old_container.attr('id', container_id + '___rlj32489fd'); // TODO: use guid to ensure uniqueness
+            old_container.attr('id', container_id + guid());
 
             add_new_content(content, from, old_container);
             var new_container = $('#' + container_id);
@@ -182,6 +182,10 @@ function HashNav(container_id, options) {
             transition(from, old_container, new_container);
         }
 
+    }
+
+    var guid = function() {
+        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     }
 
     var add_new_content = function(content, from, old_container) {
