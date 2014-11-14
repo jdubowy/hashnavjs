@@ -208,17 +208,18 @@ function HashNav(container_id, options) {
 
     var transition = function(from, old_container, new_container) {
         var container_class = old_container.attr('class');
-
-        old_container.one('webkitTransitionEnd', function(e) {
-            $('#' + old_container.attr('id')).remove();
-            new_container.attr('class', container_class);
-        });
-        // new_container.one('webkitTransitionEnd', function(e) {
-        //     new_container.attr('class', container_class)
-        // })
+        /* Note: this uses setTimeout rather than
+             old_container.one('webkitTransitionEnd', function(e) {...}
+           because hitting links in quick succession, before the previous
+           transition's end, was resulting in orphaned old containers
+           being left behind */
 
         old_container.attr('class', [container_class, old_container_class(from)].join(' '));
         new_container.attr('class', [container_class, new_container_class()].join(' '));
+        setTimeout(function(){
+            old_container.remove();
+            new_container.attr('class', container_class);
+        }, 1250);
     }
 
     var old_container_class = function(from) {
